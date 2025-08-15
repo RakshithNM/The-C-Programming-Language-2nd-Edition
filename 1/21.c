@@ -6,8 +6,53 @@ to reach a tab stop, which should be given preference? */
 
 #include <stdio.h>
 
-int main() {
-	printf("%s", "Hello, world!\n");
-  return 0;
+int getSpacesToStop(int col);
+void flushSpaces(int *pendingSpaces, int absorbRemainder);
+
+void flushSpaces(int *pendingSpaces, int absorbRemainder) {
+  if(*pendingSpaces < 0) {
+    return;
+  }
+  if(!absorbRemainder) {
+    for(int i = 0; i < *pendingSpaces; i++) {
+      putchar('_');
+    }
+  }
+  *pendingSpaces = 0;
 }
 
+int getSpacesToStop(int col) {
+  int nextStop = ((col / TABSTOPLENGTH) * TABSTOPLENGTH) + TABSTOPLENGTH;
+  return nextStop - col;
+}
+
+int main() {
+  int c;
+  int col = 0, pendingSpaces = 0;
+  while((c = getchar()) != EOF) {
+    if(c == ' ') {
+      col++;
+      pendingSpaces++;
+      if((col % TABSTOPLENGTH) == 0 && pendingSpaces > 0) {
+        putchar('|');
+        pendingSpaces = 0;
+      }
+    }
+    else if(c == '\t') {
+      flushSpaces(&pendingSpaces, 1);
+      putchar('|');
+      col += getSpacesToStop(col);
+    }
+    else if(c == '\n') {
+      flushSpaces(&pendingSpaces, 0);
+      putchar(c);
+      col = 0;
+    }
+    else {
+      flushSpaces(&pendingSpaces, 0);
+      putchar(c);
+      col++;
+    }
+  }
+  return 0;
+}
