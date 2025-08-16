@@ -2,7 +2,7 @@
 shorter lines after the last non-blank character that occurs before the n-th
 column of input. Make sure your program does something intelligent with very
 long lines, and if there are no blanks or tabs before the specified column */
-#define N 5
+#define N 60
 #define LIMIT 1000
 
 #include <stdio.h>
