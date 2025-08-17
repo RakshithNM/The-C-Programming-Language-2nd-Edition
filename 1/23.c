@@ -69,9 +69,6 @@ int main(int argc, char *argv[]) {
         break;
       }
       case IN_BLOCK_COMMENT: {
-        // if(c == '\n') {
-        //   putchar('\n');
-        // }
         if(c == '*') {
           int d = fgetc(fp);
           if(d == '/') {
